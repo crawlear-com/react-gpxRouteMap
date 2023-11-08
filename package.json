@@ -1,9 +1,9 @@
 {
   "name": "react-gpxroutemap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "gpx route visualizer using Leaflet, File API and react",
-  "main": "index.js",
-  "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c"
