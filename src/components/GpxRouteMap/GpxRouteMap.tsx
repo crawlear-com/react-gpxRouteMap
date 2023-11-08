@@ -3,6 +3,7 @@ import 'leaflet-gpx'
 import * as L from 'leaflet'
 
 import 'leaflet/dist/leaflet.css'
+//import '../../css/Map.scss'
 
 function GpxRouteMap (): React.JSX.Element {
 
@@ -43,7 +44,7 @@ function GpxRouteMap (): React.JSX.Element {
   }, [])
 
   return <div className="mapContainer">
-      <div id="map"></div>
+      <div id="map" className="map"></div>
       <input type="file"
         id="fileElem"
         multiple
