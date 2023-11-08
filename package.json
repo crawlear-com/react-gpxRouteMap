@@ -1,9 +1,10 @@
 {
   "name": "react-gpxroutemap",
-  "version": "1.0.1",
+  "version": "0.0.2",
   "description": "gpx route visualizer using Leaflet, File API and react",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "we"
+    "url": "http://crawlear.com"
   },
   "keywords": [
     "react",
@@ -19,7 +20,7 @@
     "leaflet",
     "fileAPI"
   ],
-  "author": "Jose A. Anguita",
+  "author": "Jose A. Anguita @crawlear.com",
   "license": "ISC",
   "dependencies": {
     "@types/leaflet": "^1.9.7",

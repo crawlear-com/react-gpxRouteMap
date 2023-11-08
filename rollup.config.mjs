@@ -11,7 +11,7 @@ export default [
       {
         file: "dist/cjs/index.js",
         format: "cjs",
-        sourcemap: true,
+        sourcemap: true
       },
       {
         file: "dist/esm/index.js",
@@ -27,10 +27,10 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
     ],
-    external: [/\.scss$/]
+    external: ["react"]
   },
   {
-    input: "dist/esm/types/index.d.ts",
+    input: "src/index.ts",
     output: [{ file: "dist/index.d.ts", format: "cjs" }],
     plugins: [dts()],
   },
