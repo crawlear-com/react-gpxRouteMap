@@ -2,7 +2,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
-import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import simplevars from 'postcss-simple-vars';
 import nested from 'postcss-nested';
@@ -26,7 +26,9 @@ export default [
       },
     ],
     plugins: [
-      peerDepsExternal(),
+      peerDepsExternal({
+        includeDependencies: true,
+      }),
       resolve(),
       commonjs(),
       typescript({ 
@@ -43,8 +45,7 @@ export default [
           cssnano(),
         ],
       })
-    ],
-    external: ["react"]
+    ]
   },
   {
     input: "src/index.ts",

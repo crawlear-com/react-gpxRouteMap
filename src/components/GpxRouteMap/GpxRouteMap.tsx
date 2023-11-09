@@ -3,56 +3,42 @@ import 'leaflet-gpx'
 import * as L from 'leaflet'
 
 import 'leaflet/dist/leaflet.css'
+import FileLoader from './FileLoader'
+//By now the css is not included until solved
 //import '../../css/Map.scss'
 
-function GpxRouteMap (): React.JSX.Element {
+interface GpxRouteMapProps {
+  onFileResolved: Function
+}
+
+function GpxRouteMap ({ onFileResolved }: GpxRouteMapProps): React.JSX.Element {
+  let map: L.Map
 
   React.useEffect(() => {
-    const map: L.Map = L.map('map').fitWorld();
-  
+    map = L.map('map').fitWorld();
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(map)
-
-    const fileSelect = document.getElementById('fileSelect')
-    const fileElem = document.getElementById('fileElem')
-
-    fileSelect?.addEventListener('click', () => {
-        fileElem?.click();
-    }, false);
-
-    fileElem?.addEventListener('change', (e: Event) => {
-        const file = (e?.target as HTMLInputElement).files?.[0]
-        const fr = new FileReader()
-
-        fr.onload = () => {
-          const fileContent = fr.result?.toString() || ''
-          const gpxL = new L.GPX(fileContent, {
-            async: true,
-            marker_options: {
-              wptIconUrls: { '': '/marker-icon.png' },
-              startIconUrl: '/marker-icon.png',
-              endIconUrl: '/marker-icon.png',
-              shadowUrl: '/marker-shadow.png'
-            }}).on('loaded', function(e) {
-            map.fitBounds(e.target.getBounds())
-          }).addTo(map)
-        }
-        file && fr.readAsText(file)
-    })
   }, [])
+
+  function onFileLoaded(fileContent: string) {
+    const gpxL = new L.GPX(fileContent, {
+      async: true,
+      marker_options: {
+        wptIconUrls: { '': '/marker-icon.png' },
+        startIconUrl: '/marker-icon.png',
+        endIconUrl: '/marker-icon.png',
+        shadowUrl: '/marker-shadow.png'
+      }}).on('loaded', (e: L.LeafletEvent) => {
+        map.fitBounds(e.target.getBounds())
+        onFileResolved(fileContent)
+      })
+  }
 
   return <div className="mapContainer">
       <div id="map" className="map"></div>
-      <input type="file"
-        id="fileElem"
-        multiple
-        accept=".gpx"
-        style={{
-            display: 'none'
-        }} />
-        <button id="fileSelect" type="button">Select some files</button>
+      <FileLoader onFileLoaded={onFileLoaded}></FileLoader>
     </div>
 }
 
