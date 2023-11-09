@@ -45,12 +45,12 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-scss": "^4.0.0",
-    "sass": "^1.69.5",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "@types/react": "^18.2.36"
+    "@types/react": "^18.2.36",
+    "sass": "^1.69.5"
   }
 }
