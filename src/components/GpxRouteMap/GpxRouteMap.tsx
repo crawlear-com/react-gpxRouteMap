@@ -21,6 +21,10 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(map)
+
+    if (gpx && gpx.length) {
+      onFileLoaded(gpx)
+    }
   }, [])
 
   function onFileLoaded(fileContent: string) {
@@ -35,10 +39,6 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
         map.fitBounds(e.target.getBounds())
         onFileResolved(fileContent)
       }).addTo(map)
-  }
-
-  if (gpx && gpx.length) {
-    onFileLoaded(gpx)
   }
 
   return <div className="mapContainer">
