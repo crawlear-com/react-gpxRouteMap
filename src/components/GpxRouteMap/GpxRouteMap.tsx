@@ -34,7 +34,7 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
       }}).on('loaded', (e: L.LeafletEvent) => {
         map.fitBounds(e.target.getBounds())
         onFileResolved(fileContent)
-      })
+      }).addTo(map)
   }
 
   if (gpx && gpx.length) {
