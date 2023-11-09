@@ -8,10 +8,11 @@ import FileLoader from './FileLoader'
 //import '../../css/Map.scss'
 
 interface GpxRouteMapProps {
+  gpx?: string
   onFileResolved: Function
 }
 
-function GpxRouteMap ({ onFileResolved }: GpxRouteMapProps): React.JSX.Element {
+function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Element {
   let map: L.Map
 
   React.useEffect(() => {
@@ -36,9 +37,13 @@ function GpxRouteMap ({ onFileResolved }: GpxRouteMapProps): React.JSX.Element {
       })
   }
 
+  if (gpx && gpx.length) {
+    onFileLoaded(gpx)
+  }
+
   return <div className="mapContainer">
       <div id="map" className="map"></div>
-      <FileLoader onFileLoaded={onFileLoaded}></FileLoader>
+      { !gpx && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
     </div>
 }
 

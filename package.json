@@ -1,6 +1,6 @@
 {
   "name": "react-gpxroutemap",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "gpx route visualizer using Leaflet, File API and react",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -39,6 +39,7 @@
     "postcss-scss": "^4.0.9",
     "postcss-simple-vars": "^7.0.1",
     "rollup": "^4.3.0",
+    "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-import-css": "^3.3.5",
     "rollup-plugin-peer-deps-external": "^2.2.4",
@@ -46,7 +47,7 @@
     "rollup-plugin-scss": "^4.0.0",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
-  },
+},
   "peerDependencies": {
     "react": "^18.2.0",
     "@types/react": "^18.2.36"

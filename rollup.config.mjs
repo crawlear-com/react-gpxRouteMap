@@ -9,6 +9,7 @@ import nested from 'postcss-nested';
 import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 import css from "rollup-plugin-import-css";
+import copy from 'rollup-plugin-copy'
 
 export default [
   {
@@ -44,6 +45,11 @@ export default [
           cssnext({ warnForDuplicates: false, }),
           cssnano(),
         ],
+      }),
+      copy({
+        targets: [
+          { src: 'src/img/**/*', dest: 'dist/public/img' }
+        ]
       })
     ]
   },
