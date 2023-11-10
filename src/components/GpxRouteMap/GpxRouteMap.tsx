@@ -34,13 +34,13 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
   }, [])
 
   function onFileLoaded(fileContent: string) {
-    const parser = new XMLParser({
-      ignoreAttributes: false 
-    });
-    let jObj = parser.parse(fileContent),
-      routePoint: RoutePoint
-
     try {
+      const parser = new XMLParser({
+        ignoreAttributes: false 
+      });
+      let jObj = parser.parse(fileContent),
+        routePoint: RoutePoint
+  
       routePoint = {
         lat: jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lat'] : jObj.gpx.wpt[0]['@_lat'],
         lon: jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lon'] : jObj.gpx.wpt[0]['@_lon'],
