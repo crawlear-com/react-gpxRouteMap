@@ -10,7 +10,7 @@ import FileLoader from './FileLoader'
 
 interface GpxRouteMapProps {
   gpx?: string
-  onFileResolved: Function
+  onFileResolved?: Function
 }
 
 export interface RoutePoint {
@@ -55,10 +55,10 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
           shadowUrl: '/marker-shadow.png'
         }}).on('loaded', (e: L.LeafletEvent) => {
           map.fitBounds(e.target.getBounds())
-          onFileResolved(fileContent, routePoint)
+          onFileResolved && onFileResolved(fileContent, routePoint)
         }).addTo(map) 
     } catch(e) {
-      onFileResolved('', { 
+      onFileResolved && onFileResolved('', { 
         lat: 0,
         lon: 0
       })
@@ -66,8 +66,8 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
   }
 
   return <div className="mapContainer">
+      { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
       <div id="map" className="map"></div>
-      { !gpx && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
     </div>
 }
 
