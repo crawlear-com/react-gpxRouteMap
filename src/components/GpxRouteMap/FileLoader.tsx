@@ -1,24 +1,24 @@
 import * as React from 'react'
-import * as L from 'leaflet'
 
 interface FileLoaderProps {
     onFileLoaded: Function
 }
 
 function  FileLoader({ onFileLoaded }: FileLoaderProps) {
-    React.useEffect(() => {
-        const fileSelect = document.getElementById('fileSelect')
-        const fileElem = document.getElementById('fileElem')
-    
-        fileSelect?.addEventListener('click', () => {
-            fileElem?.click();
+    const fileSelectRef = React.useRef(null)
+    const fileElemRef = React.useRef(null)
+
+    React.useEffect(() => {
+        fileSelectRef.current && (fileSelectRef.current as HTMLButtonElement).addEventListener('click', () => {
+            fileElemRef.current && (fileElemRef.current as HTMLButtonElement  as HTMLButtonElement).click();
         }, false);
     
-        fileElem?.addEventListener('change', (e: Event) => {
+        fileElemRef.current && (fileElemRef.current as HTMLInputElement).addEventListener('change', (e: Event) => {
             const file = (e?.target as HTMLInputElement).files?.[0]
             const fr = new FileReader()
     
             fr.onload = () => {
+                console.log("onload!")
               onFileLoaded(fr.result?.toString() || '')
             }
             file && fr.readAsText(file)
@@ -26,8 +26,8 @@ function  FileLoader({ onFileLoaded }: FileLoaderProps) {
     }, [])
 
     return <>
-        <input type="file" id="fileElem" multiple accept=".gpx" style={{ display: 'none' }} />
-        <button id="fileSelect" type="button">Select some files</button>
+        <input ref={fileElemRef} title="inputFile" type="file" id="fileElem" multiple accept=".gpx" style={{ display: 'none' }} />
+        <button ref={fileSelectRef} title="buttonInputFile"  id="fileSelect" type="button">Select some files</button>
     </>
 }
 
