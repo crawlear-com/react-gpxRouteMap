@@ -27,7 +27,7 @@ function  FileLoader({ onFileLoaded }: FileLoaderProps) {
 
     return <>
         <input ref={fileElemRef} title="inputFile" type="file" id="fileElem" multiple accept=".gpx" style={{ display: 'none' }} />
-        <button ref={fileSelectRef} title="buttonInputFile"  id="fileSelect" type="button">Select some files</button>
+        <button ref={fileSelectRef} title="buttonInputFile"  id="fileSelect" type="button">GPX</button>
     </>
 }
 
