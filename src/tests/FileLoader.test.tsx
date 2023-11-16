@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import FileLoader from '../components/GpxRouteMap/FileLoader'
 import '@testing-library/jest-dom'
 
@@ -43,7 +43,6 @@ test('change event on input loads the fileContent and calls the callback', async
     fireEvent.change(input, {
       target: { files: [new File(["gpx file content"], "test.gpx", { type: "plain/text" })] },
     })
-  
 
   await waitFor(() => {expect(readAsTextSpy).toHaveBeenCalled()});
   await waitFor(() => {expect(onFileLoaded).toHaveBeenCalled()});

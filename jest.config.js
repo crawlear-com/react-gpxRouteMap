@@ -12,6 +12,9 @@ module.exports = {
     "json"
   ],
   verbose: true,
+  moduleNameMapper: {
+    '^.+\\.(css|scss)$': '<rootDir>/src/tests/CSSStub.js'
+  }
 };
 
 const {defaults} = require('jest-config');

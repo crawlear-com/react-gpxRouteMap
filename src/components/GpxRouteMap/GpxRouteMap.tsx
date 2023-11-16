@@ -67,7 +67,7 @@ function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Elem
 
   return <div className="mapContainer">
       { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
-      <div id="map" className="map"></div>
+      <div id="map" title='routeMap' className="map"></div>
     </div>
 }
 
