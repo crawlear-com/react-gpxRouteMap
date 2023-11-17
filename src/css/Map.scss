@@ -2,3 +2,30 @@
     height: 380px;
     width: 350px;
 }
+
+.graphContainer {
+    position: absolute;
+    height: 50px;
+    width: 320px;
+
+    div:first-of-type::before {
+        content: "elevation";
+        position: relative;
+        left: -80px;
+        font-size: 0.6em;
+        color: black;
+        transform: rotate(180deg);
+        display: block;
+    }
+
+    .dataPoint {
+        background-color: rgba(255,0,0,0.2);
+        display: block;
+        float: left;
+        position: relative;
+        left: 16px;
+        transform-origin: 0% 0%;
+        transform: rotate(180deg);
+        z-index: 1000;
+    }
+}

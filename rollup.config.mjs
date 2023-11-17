@@ -53,9 +53,5 @@ export default [
       })
     ]
   },
-  {
-    input: "src/index.ts",
-    output: [{ file: "dist/index.d.ts", format: "cjs" }],
-    plugins: [dts()],
-  },
+
 ];

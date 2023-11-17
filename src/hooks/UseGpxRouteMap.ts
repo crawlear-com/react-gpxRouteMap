@@ -14,7 +14,7 @@ const gpxParserOptions = {
     }
 }
 
-function UseGpxRouteMap(onFileResolved?: Function, gpx?: string) {
+function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<Function> {
     let map: L.Map
 
     React.useEffect(() => {
@@ -29,18 +29,36 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string) {
       }
     }, [])
 
-    function onFileLoaded(fileContent: string) {
+    function getElevationMapData(gpx: string): Array<number> {
+        const gpxObject = parseGpxString(gpx)
+        let sections: Array<any>
+        const data: Array<number> = []
+    
+        if (gpxObject && gpxObject.gpx) {
+          if (gpxObject.gpx.trk) {
+            sections = gpxObject.gpx.trk.trkseg.trkpt
+          } else {
+              sections = gpxObject.gpx.wpt
+          }      
+          sections.forEach(element => {
+              data.push(element.ele)
+          })
+        }
+        return data
+    }
+
+    function onFileLoaded(fileContents: string): void {
       try {
-        let jObj = parseGpxString(fileContent),
+        let jObj = parseGpxString(fileContents),
           routePoint: RoutePoint = getRoutePoint(jObj)
         const onLoadedHandler = (e: L.LeafletEvent) => {
             const gpxInfo = getGpxInfo(e.target)
             generateInfoPopUp(routePoint, gpxInfo, map)
             map.fitBounds(e.target.getBounds())
 
-            onFileResolved && onFileResolved(fileContent, routePoint)
+            onFileResolved && onFileResolved(fileContents, routePoint)
         }
-        const gpxL = new L.GPX(fileContent, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map) 
+        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map) 
 
       } catch(e) {
         onFileResolved && onFileResolved('', { 
@@ -49,8 +67,8 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string) {
         })
       }
     }
-
-    return [onFileLoaded]
+    
+    return [onFileLoaded, getElevationMapData]
 }
 
 function getRoutePoint(jObj: any): RoutePoint {
@@ -67,7 +85,10 @@ function parseGpxString(gpx: string) {
             ignoreAttributes: false 
           });
           result = parser.parse(gpx)
-    } catch(e) { }
+    } catch(e) {
+      result = { gpx: { wpt: [] } }
+    }
+
     return result
 }
 
@@ -81,6 +102,7 @@ function getGpxInfo(leafletEventTarget: any): GpxInfo {
         elevationMax: leafletEventTarget.get_elevation_max(),
     }
 }
+
 
 function generateInfoPopUp(routePoint: RoutePoint, gpxInfo: GpxInfo, map: L.Map) {
     var popup = L.popup()

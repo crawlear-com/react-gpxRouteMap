@@ -18,7 +18,6 @@ function  FileLoader({ onFileLoaded }: FileLoaderProps) {
             const fr = new FileReader()
     
             fr.onload = () => {
-                console.log("onload!")
               onFileLoaded(fr.result?.toString() || '')
             }
             file && fr.readAsText(file)
