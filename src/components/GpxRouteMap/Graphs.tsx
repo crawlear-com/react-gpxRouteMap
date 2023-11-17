@@ -14,7 +14,7 @@ function Graphs({ data }: GraphsProps) {
     data.forEach((value) => {
         const height = ((value - min) / len) * 100
         const divStyle = {
-            width: `${320/data.length}px`,
+            width: `${300/data.length}px`,
             height: `${height + 0.1}%`
         }
         const div = <div style={divStyle} className="dataPoint"></div>
