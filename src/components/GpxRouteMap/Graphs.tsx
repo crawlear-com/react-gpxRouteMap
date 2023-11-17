@@ -11,17 +11,13 @@ function Graphs({ data }: GraphsProps) {
     const min = Math.min(...data)
     const len = max - min
 
-    function avoidInteraction(e: React.MouseEvent<HTMLDivElement>) {
-        e.preventDefault()
-    }
-
     data.forEach((value) => {
         const height = ((value - min) / len) * 100
         const divStyle = {
             width: `${320/data.length}px`,
             height: `${height + 0.1}%`
         }
-        const div = <div onClick={avoidInteraction} style={divStyle} className="dataPoint"></div>
+        const div = <div style={divStyle} className="dataPoint"></div>
         divs.push(div)
     })
 
