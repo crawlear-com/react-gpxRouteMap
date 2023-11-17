@@ -1,12 +1,15 @@
 .map { 
     height: 380px;
     width: 350px;
+    border-radius: 15px;
 }
 
 .graphContainer {
     position: absolute;
     height: 50px;
     width: 320px;
+    transform: translate(0px, -50px);
+    z-index: 1000;
 
     div:first-of-type::before {
         content: "elevation";
@@ -25,7 +28,7 @@
         position: relative;
         left: 16px;
         transform-origin: 0% 0%;
-        transform: rotate(180deg);
+        transform: rotate(180deg) translate(0px, -50px);
         z-index: 1000;
     }
 }
