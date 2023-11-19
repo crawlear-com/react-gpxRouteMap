@@ -48,7 +48,7 @@ export default [
       }),
       copy({
         targets: [
-          { src: 'src/img/**/*', dest: 'dist/public/img' }
+          { src: 'src/resources/img/**/*', dest: 'dist/public/img' }
         ]
       })
     ]

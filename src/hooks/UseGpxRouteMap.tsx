@@ -3,6 +3,7 @@ import 'leaflet-gpx'
 import * as L from 'leaflet'
 import { XMLParser } from 'fast-xml-parser'
 import { RoutePoint, GpxInfo } from '../components/GpxRouteMap/GpxRouteMap'
+import { useTranslation } from "react-i18next"
 
 const gpxParserOptions = {
     async: true,
@@ -17,6 +18,7 @@ const gpxParserOptions = {
 function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
     let map: L.Map
     const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
+    const { t } = useTranslation()
 
     React.useEffect(() => {
       map = L.map('map').fitWorld();
@@ -50,12 +52,12 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
 
     function generateInfoPopUp(gpxInfo: GpxInfo): React.JSX.Element {
       return <div className="extraGpxInfoContainer rounded rounded3">
-        <div>{`Distance: ${(gpxInfo.distance/1000).toFixed(3)} m`}</div>
-        <div>{`Time: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`Moving Time: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`Elevation min: ${(gpxInfo.elevationMin).toFixed(3)} m`}</div>
-        <div>{`Elevation max: ${(gpxInfo.elevationMax).toFixed(3)} m`}</div>
-        <div>{`Speed: ${(gpxInfo.speed).toFixed(3)} Km/h`}</div>
+        <div>{`${t('distancia')}: ${(gpxInfo.distance/1000).toFixed(3)} m`}</div>
+        <div>{`${t('tiempo')}: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</div>
+        <div>{`${t('tiempomovimiento')}: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</div>
+        <div>{`${t('elevacionmin')}: ${(gpxInfo.elevationMin).toFixed(3)} m`}</div>
+        <div>{`${t('elevacionmax')}: ${(gpxInfo.elevationMax).toFixed(3)} m`}</div>
+        <div>{`${t('velocidad')}: ${(gpxInfo.speed).toFixed(3)} Km/h`}</div>
       </div>
     }
 
