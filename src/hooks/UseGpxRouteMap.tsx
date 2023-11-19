@@ -14,8 +14,9 @@ const gpxParserOptions = {
     }
 }
 
-function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<Function> {
+function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
     let map: L.Map
+    const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
 
     React.useEffect(() => {
       map = L.map('map').fitWorld();
@@ -47,15 +48,26 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<Function
         return data
     }
 
+    function generateInfoPopUp(gpxInfo: GpxInfo): React.JSX.Element {
+      return <div className="extraGpxInfoContainer rounded rounded3">
+        <div>{`Distance: ${(gpxInfo.distance/1000).toFixed(3)} m`}</div>
+        <div>{`Time: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</div>
+        <div>{`Moving Time: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</div>
+        <div>{`Elevation min: ${(gpxInfo.elevationMin).toFixed(3)} m`}</div>
+        <div>{`Elevation max: ${(gpxInfo.elevationMax).toFixed(3)} m`}</div>
+        <div>{`Speed: ${(gpxInfo.speed).toFixed(3)} Km/h`}</div>
+      </div>
+    }
+
     function onFileLoaded(fileContents: string): void {
       try {
-        let jObj = parseGpxString(fileContents),
-          routePoint: RoutePoint = getRoutePoint(jObj)
+        let jObj = parseGpxString(fileContents)
         const onLoadedHandler = (e: L.LeafletEvent) => {
+            const routePoint: RoutePoint = getRoutePoint(jObj)
             const gpxInfo = getGpxInfo(e.target)
-            generateInfoPopUp(routePoint, gpxInfo, map)
-            map.fitBounds(e.target.getBounds())
 
+            map.fitBounds(e.target.getBounds())
+            setExtraGpxInfo(generateInfoPopUp(gpxInfo))
             onFileResolved && onFileResolved(fileContents, routePoint)
         }
         const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map) 
@@ -64,11 +76,11 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<Function
         onFileResolved && onFileResolved('', { 
           lat: 0,
           lon: 0
-        })
+        },<></>)
       }
     }
-    
-    return [onFileLoaded, getElevationMapData]
+
+    return [onFileLoaded, getElevationMapData, extraGpxInfo]
 }
 
 function getRoutePoint(jObj: any): RoutePoint {
@@ -101,19 +113,6 @@ function getGpxInfo(leafletEventTarget: any): GpxInfo {
         elevationMin: leafletEventTarget.get_elevation_min(),
         elevationMax: leafletEventTarget.get_elevation_max(),
     }
-}
-
-
-function generateInfoPopUp(routePoint: RoutePoint, gpxInfo: GpxInfo, map: L.Map) {
-    var popup = L.popup()
-        .setLatLng([routePoint.lat, routePoint.lon])
-        .setContent(`Distance: ${(gpxInfo.distance/1000).toFixed(3)} m\
-            <br /> Time: ${((gpxInfo.time/1000)/60).toFixed(3)} mins\
-            <br /> Moving Time: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins\
-            <br /> Speed: ${(gpxInfo.speed).toFixed(3)} Km/h\
-            <br /> Elevation min: ${(gpxInfo.elevationMin).toFixed(3)} m\
-            <br /> Elevation max: ${(gpxInfo.elevationMax).toFixed(3)} m`)
-        .openOn(map);
 }
 
 export default UseGpxRouteMap
