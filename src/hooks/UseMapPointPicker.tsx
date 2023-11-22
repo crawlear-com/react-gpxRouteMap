@@ -2,29 +2,12 @@ import * as React from 'react'
 import 'leaflet-gpx'
 import * as L from 'leaflet'
 import { useTranslation } from "react-i18next"
+import { iconRoute } from '../components/MapPointPicker/Icons'
 
 function UseMapPointPicker(onMapClick: Function, points: Array<any>): Array<any> {
     const { t } = useTranslation()
     const markers = React.useRef<Array<L.Layer>>([])
     const map = React.useRef<L.Map | null>(null)
-    const icon = L.icon({
-      iconUrl: '/marker-icon-end.png',
-      iconSize: [19, 31],
-      iconAnchor: [19, 31],
-      popupAnchor: [-3, -76],
-      shadowUrl: '/marker-shadow.png',
-      shadowSize: [31, 31],
-      shadowAnchor: [31, 31]
-    })
-    const iconRoute = L.icon({
-      iconUrl: '/marker-icon.png',
-      iconSize: [19, 31],
-      iconAnchor: [19, 31],
-      popupAnchor: [-3, -76],
-      shadowUrl: '/marker-shadow.png',
-      shadowSize: [31, 31],
-      shadowAnchor: [31, 31]
-    })
 
     function removePreviousMarkers() {
       markers.current.forEach((marker) => {
