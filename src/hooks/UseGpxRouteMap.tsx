@@ -9,28 +9,30 @@ const gpxParserOptions = {
     async: true,
     marker_options: {
       wptIconUrls: { '': '/marker-icon.png' },
-      startIconUrl: '/marker-icon.png',
-      endIconUrl: '/marker-icon.png',
+      startIconUrl: '/marker-icon-start.png',
+      endIconUrl: '/marker-icon-end.png',
       shadowUrl: '/marker-shadow.png'
     }
 }
 
 function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
-    let map: L.Map
+    const map = React.useRef<L.Map | null>(null)
     const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
     const { t } = useTranslation()
 
     React.useEffect(() => {
-      map = L.map('map').fitWorld();
+      map.current = L.map('map').fitWorld();
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
-      }).addTo(map)
-  
+      }).addTo(map.current)
+    }, [])
+
+    React.useEffect(() => {
       if (gpx && gpx.length) {
         onFileLoaded(gpx)
       }
-    }, [])
+    }, [gpx])
 
     function getElevationMapData(gpx: string): Array<number> {
         const gpxObject = parseGpxString(gpx)
@@ -68,11 +70,11 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
             const routePoint: RoutePoint = getRoutePoint(jObj)
             const gpxInfo = getGpxInfo(e.target)
 
-            map.fitBounds(e.target.getBounds())
+            map.current?.fitBounds(e.target.getBounds())
             setExtraGpxInfo(generateInfoPopUp(gpxInfo))
             onFileResolved && onFileResolved(fileContents, routePoint)
         }
-        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map) 
+        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map.current!) 
 
       } catch(e) {
         onFileResolved && onFileResolved('', { 
