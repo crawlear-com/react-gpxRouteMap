@@ -9,7 +9,7 @@ i18n
     resources: {
       en: {
         translation: {
-          gpxupload: "Use a GPX file to generate the route map",
+          gpxupload: "Upload a GPX file",
           distancia: "Distance",
           velocidad: "Speed",
           tiempo: "Time",
@@ -20,7 +20,7 @@ i18n
       },
       es: {
         translation: {
-            gpxupload: "Usa un fichero GPX para generar la ruta",
+            gpxupload: "Sube un fichero GPX",
             distancia: "Distancia",
             velocidad: "Velocidad",
             tiempo: "Tiempo",
