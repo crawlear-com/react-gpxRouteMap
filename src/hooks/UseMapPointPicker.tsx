@@ -4,6 +4,8 @@ import * as L from 'leaflet'
 import { useTranslation } from "react-i18next"
 import { iconRoute } from '../components/MapPointPicker/Icons'
 
+const ARROUND_BARCELONA: L.LatLngBoundsExpression = [[41.29, 1.70], [41.79, 2.30]]
+
 function UseMapPointPicker(onMapClick: Function, points: Array<any>): Array<any> {
     const { t } = useTranslation()
     const markers = React.useRef<Array<L.Layer>>([])
@@ -19,11 +21,12 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): Array<any>
       removePreviousMarkers()
       markers.current = []
 
+      console.log("CIRCLKE!")
       const circle = L.circle([e.latlng.lat, e.latlng.lng], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.2,
-        radius: 50000
+        radius: 25000
       }).addTo(map.current!)
       markers.current.push(circle)
 
@@ -33,8 +36,8 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): Array<any>
     function addPropsPoints() {
       let max = { lat: -90, lon: -180 }
       let min = { lat: 90, lon: 180 }
-     
-      if (points.length >=1) {
+
+      if (points.length > 0) {
         points.forEach((point) => {
           markers.current.push(L.marker([point.lat, point.lon], { icon: iconRoute }).addTo(map.current!))
           if(point.lat < min.lat) {
@@ -53,19 +56,14 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): Array<any>
       }
 
       points.length && map.current?.fitBounds([
-        [min.lat-0.3, min.lon-0.3],
-        [max.lat+0.3, max.lon+0.3]
-      ])
+        [min.lat-0.225, min.lon-0.225],
+        [max.lat+0.225, max.lon+0.225]])
     }
 
     React.useEffect(() => {
-      const newMap = L.map('mappicker').fitBounds([
-        [41.29, 1.70],
-        [41.79, 2.30]
-      ]);
+      const newMap = L.map('mappicker').fitBounds(ARROUND_BARCELONA);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
+        maxZoom: 19, attribution: '© OpenStreetMap'
       }).addTo(newMap)
       newMap.on('click', (e: L.LeafletMouseEvent) => {
         mapClick(e)

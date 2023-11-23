@@ -8,18 +8,26 @@ import { GpxRouteMap } from '../components';
 import 'leaflet-gpx'
 import * as L from 'leaflet'
 import '@testing-library/jest-dom'
+import { useTranslation } from "react-i18next"
 import FileLoader from '../components/GpxRouteMap/FileLoader';
 
 const fitWorld = jest.fn()
 const addToMap = jest.fn()
+const fitBounds = jest.fn()
 
+jest.mock('../i18n', () => {
+  return {}
+})
 jest.mock('../components/GpxRouteMap/FileLoader')
 //Note as leaflet-gpx adds defines L.GPX, the mock order must to not change
 jest.mock('leaflet-gpx')
 jest.mock('leaflet', () => {
   return {
     map: jest.fn().mockImplementation(() => {
-      return { fitWorld: fitWorld }
+      return { 
+        fitWorld: fitWorld,
+        fitBounds: fitBounds
+      }
     }),
     tileLayer: jest.fn().mockImplementation(() => {
       return { addTo: addToMap }
@@ -33,9 +41,23 @@ jest.mock('leaflet', () => {
           return { addTo: jest.fn() }
         })        
       }
+    }),
+    icon: jest.fn().mockImplementation(() => {
+      return { }
     })
   }
 })
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => {
+      return {
+          t: (str: string) => str,
+          i18n: {
+              changeLanguage: () => new Promise(() => {}),
+          }
+      };
+  }
+}));
 
 test('GpxRouteMap renders the content without FileLoader', () => {
   const onFileResolved = jest.fn()
@@ -76,8 +98,8 @@ test('GpxRouteMap inits with gpx', () => {
     async: true,
     marker_options: {
       wptIconUrls: { '': '/marker-icon.png' },
-      startIconUrl: '/marker-icon.png',
-      endIconUrl: '/marker-icon.png',
+      startIconUrl: '/marker-icon-start.png',
+      endIconUrl: '/marker-icon-end.png',
       shadowUrl: '/marker-shadow.png'
     }})
 })
