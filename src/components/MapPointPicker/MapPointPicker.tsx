@@ -7,7 +7,7 @@ interface MapPointPickerProps {
 }
 
 function MapPointPicker({ onMapClick, points }: MapPointPickerProps):React.JSX.Element {
-    const [res] = UseMapPointPicker(onMapClick, points)
+    UseMapPointPicker(onMapClick, points)
 
     return <div className="mapContainer">
         <div id="mappicker" title='mapPointPicker' className="map"></div>
