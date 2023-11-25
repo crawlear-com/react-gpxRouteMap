@@ -54,12 +54,12 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
 
     function generateInfoPopUp(gpxInfo: GpxInfo): React.JSX.Element {
       return <div className="extraGpxInfoContainer rounded rounded3">
-        <div>{`${t('distancia')}: ${(gpxInfo.distance/1000).toFixed(3)} m`}</div>
-        <div>{`${t('tiempo')}: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`${t('tiempomovimiento')}: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`${t('elevacionmin')}: ${(gpxInfo.elevationMin).toFixed(3)} m`}</div>
-        <div>{`${t('elevacionmax')}: ${(gpxInfo.elevationMax).toFixed(3)} m`}</div>
-        <div>{`${t('velocidad')}: ${(gpxInfo.speed).toFixed(3)} Km/h`}</div>
+        <span className="bold">{t('distancia')}</span><span>{`: ${(gpxInfo.distance/1000).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('tiempo')}</span><span>{`: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</span><br />
+        <span className="bold">{t('tiempomovimiento')}</span><span>{`: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</span><br />
+        <span className="bold">{t('elevacionmin')}</span><span>{`: ${(gpxInfo.elevationMin).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('elevacionmax')}</span><span>{`: ${(gpxInfo.elevationMax).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('velocidad')}</span><span>{`: ${(gpxInfo.speed).toFixed(3)} Km/h`}</span><br />
       </div>
     }
 
