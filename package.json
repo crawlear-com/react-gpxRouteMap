@@ -27,6 +27,7 @@
     "@types/leaflet-gpx": "^1.3.7",
     "fast-xml-parser": "^4.3.2",
     "i18next": "^23.7.6",
+    "i18next-browser-languagedetector": "^7.2.0",
     "jest-environment-jsdom": "^29.7.0",
     "leaflet": "^1.9.4",
     "leaflet-gpx": "^1.7.0",

@@ -10,6 +10,7 @@ function Graphs({ data }: GraphsProps) {
     const max = Math.max(...data)
     const min = Math.min(...data)
     const len = max - min
+    let key = 0
 
     data.forEach((value) => {
         const height = ((value - min) / len) * 100
@@ -17,11 +18,12 @@ function Graphs({ data }: GraphsProps) {
             width: `${300/data.length}px`,
             height: `${height + 0.1}%`
         }
-        const div = <div style={divStyle} className="dataPoint"></div>
+        const div = <div key={key} style={divStyle} className="dataPoint"></div>
         divs.push(div)
+        key++
     })
 
-    return <div className="graphContainer">
+    return <div key='graph' className="graphContainer">
         { divs }
     </div>
 }

@@ -27,13 +27,13 @@ export interface GpxInfo {
 }
 
 function GpxRouteMap ({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Element {
-    const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpx)
+  const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpx)
   const data = getElevationMapData(gpx || '')
 
   return <div className="mapContainer">
       { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
       <div id="map" title='routeMap' className="map"></div>
-      { data.length && <Graphs data={data} /> }
+      { data.length ? <Graphs data={data} /> : <></> }
       { extraGpxInfo }
       </div>
 }

@@ -1,13 +1,15 @@
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
+import LanguageDetector from 'i18next-browser-languagedetector'
 
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources: {
       en: {
         translation: {
-          gpxupload: "Use a GPX file to generate the route map",
+          gpxupload: "Upload a GPX file",
           distancia: "Distance",
           velocidad: "Speed",
           tiempo: "Time",
@@ -18,7 +20,7 @@ i18n
       },
       es: {
         translation: {
-            gpxupload: "Usa un fichero GPX para generar la ruta",
+            gpxupload: "Sube un fichero GPX",
             distancia: "Distancia",
             velocidad: "Velocidad",
             tiempo: "Tiempo",

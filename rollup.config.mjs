@@ -24,7 +24,7 @@ export default [
         file: "dist/esm/index.js",
         format: "esm",
         sourcemap: true,
-      },
+      }
     ],
     plugins: [
       peerDepsExternal({
@@ -52,6 +52,5 @@ export default [
         ]
       })
     ]
-  },
-
+  }
 ];

@@ -4,8 +4,20 @@
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { useTranslation } from "react-i18next"
 import FileLoader from '../components/GpxRouteMap/FileLoader'
 import '@testing-library/jest-dom'
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => {
+      return {
+          t: (str: string) => str,
+          i18n: {
+              changeLanguage: () => new Promise(() => {}),
+          }
+      };
+  }
+}));
 
 test('FileLoader renders the content', () => {
     const onFileLoaded = jest.fn()

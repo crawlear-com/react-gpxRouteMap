@@ -9,28 +9,30 @@ const gpxParserOptions = {
     async: true,
     marker_options: {
       wptIconUrls: { '': '/marker-icon.png' },
-      startIconUrl: '/marker-icon.png',
-      endIconUrl: '/marker-icon.png',
+      startIconUrl: '/marker-icon-start.png',
+      endIconUrl: '/marker-icon-end.png',
       shadowUrl: '/marker-shadow.png'
     }
 }
 
 function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
-    let map: L.Map
+    const map = React.useRef<L.Map | null>(null)
     const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
     const { t } = useTranslation()
 
     React.useEffect(() => {
-      map = L.map('map').fitWorld();
+      map.current = L.map('map').fitWorld();
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
-      }).addTo(map)
-  
+      }).addTo(map.current)
+    }, [])
+
+    React.useEffect(() => {
       if (gpx && gpx.length) {
         onFileLoaded(gpx)
       }
-    }, [])
+    }, [gpx])
 
     function getElevationMapData(gpx: string): Array<number> {
         const gpxObject = parseGpxString(gpx)
@@ -52,12 +54,12 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
 
     function generateInfoPopUp(gpxInfo: GpxInfo): React.JSX.Element {
       return <div className="extraGpxInfoContainer rounded rounded3">
-        <div>{`${t('distancia')}: ${(gpxInfo.distance/1000).toFixed(3)} m`}</div>
-        <div>{`${t('tiempo')}: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`${t('tiempomovimiento')}: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</div>
-        <div>{`${t('elevacionmin')}: ${(gpxInfo.elevationMin).toFixed(3)} m`}</div>
-        <div>{`${t('elevacionmax')}: ${(gpxInfo.elevationMax).toFixed(3)} m`}</div>
-        <div>{`${t('velocidad')}: ${(gpxInfo.speed).toFixed(3)} Km/h`}</div>
+        <span className="bold">{t('distancia')}</span><span>{`: ${(gpxInfo.distance/1000).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('tiempo')}</span><span>{`: ${((gpxInfo.time/1000)/60).toFixed(3)} mins`}</span><br />
+        <span className="bold">{t('tiempomovimiento')}</span><span>{`: ${((gpxInfo.movingTime/1000)/60).toFixed(3)} mins`}</span><br />
+        <span className="bold">{t('elevacionmin')}</span><span>{`: ${(gpxInfo.elevationMin).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('elevacionmax')}</span><span>{`: ${(gpxInfo.elevationMax).toFixed(3)} m`}</span><br />
+        <span className="bold">{t('velocidad')}</span><span>{`: ${(gpxInfo.speed).toFixed(3)} Km/h`}</span><br />
       </div>
     }
 
@@ -68,11 +70,11 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
             const routePoint: RoutePoint = getRoutePoint(jObj)
             const gpxInfo = getGpxInfo(e.target)
 
-            map.fitBounds(e.target.getBounds())
+            map.current?.fitBounds(e.target.getBounds())
             setExtraGpxInfo(generateInfoPopUp(gpxInfo))
             onFileResolved && onFileResolved(fileContents, routePoint)
         }
-        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map) 
+        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map.current!) 
 
       } catch(e) {
         onFileResolved && onFileResolved('', { 
