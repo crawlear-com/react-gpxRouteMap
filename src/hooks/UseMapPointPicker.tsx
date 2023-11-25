@@ -3,6 +3,7 @@ import 'leaflet-gpx'
 import * as L from 'leaflet'
 import { useTranslation } from "react-i18next"
 import { iconRoute } from '../components/MapPointPicker/Icons'
+import { GeoPoint } from '../components/MapPointPicker/MapPointPicker'
 
 const ARROUND_BARCELONA: L.LatLngBoundsExpression = [[41.29, 1.70], [41.79, 2.30]]
 const circleMarkerAttribs = {
@@ -46,7 +47,6 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
       removePreviousMarkers()
       markers.current = []
 
-      console.log("CIRCLKE!")
       const circle = L.circle([e.latlng.lat, e.latlng.lng], circleMarkerAttribs).addTo(map.current!)
       markers.current.push(circle)
 
@@ -54,24 +54,14 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
     }
 
     function addPropsPoints() {
-      let max = { lat: -90, lon: -180 }
-      let min = { lat: 90, lon: 180 }
+      let max: GeoPoint = { lat: -90, lon: -180 }
+      let min: GeoPoint = { lat: 90, lon: 180 }
 
       if (points.length > 0) {
         points.forEach((point) => {
           markers.current.push(L.marker([point.lat, point.lon], { icon: iconRoute }).addTo(map.current!))
-          if(point.lat < min.lat) {
-            min.lat = point.lat
-          }
-          if (point.lon < min.lon) {
-            min.lon = point.lon
-          }
-          if(point.lat > max.lat) {
-            max.lat = point.lat 
-          }
-          if(point.lon > max.lon) {
-            max.lon = point.lon
-          }
+          max = getMax(point, max)
+          min = getMin(point, min)
         })
       }
 
@@ -79,6 +69,26 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
         [min.lat-0.225, min.lon-0.225],
         [max.lat+0.225, max.lon+0.225]])
     }
+}
+
+function getMin(p1: GeoPoint, p2: GeoPoint) {
+  if(p1.lat < p2.lat) {
+    p2.lat = p1.lat
+  }
+  if (p1.lon < p2.lon) {
+    p2.lon = p1.lon
+  }
+  return p2
+}
+
+function getMax(p1: GeoPoint, p2: GeoPoint) {
+  if(p1.lat > p2.lat) {
+    p2.lat = p1.lat 
+  }
+  if(p1.lon > p2.lon) {
+    p2.lon = p1.lon
+  }
+  return p2
 }
 
 export default UseMapPointPicker

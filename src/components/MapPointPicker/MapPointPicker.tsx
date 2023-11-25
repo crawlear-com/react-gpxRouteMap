@@ -6,6 +6,11 @@ interface MapPointPickerProps {
     points: Array<any>
 }
 
+export interface GeoPoint {
+    lat: number,
+    lon: number
+}
+
 function MapPointPicker({ onMapClick, points }: MapPointPickerProps):React.JSX.Element {
     UseMapPointPicker(onMapClick, points)
 

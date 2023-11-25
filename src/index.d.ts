@@ -18,9 +18,10 @@ interface GpxInfo {
 }
 interface MapPointPickerProps {
     onMapClick: Function
+    points: Array<any>
 }
 declare function GpxRouteMap({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Element;
 
-declare function MapPointPicker({ onMapClick }: MapPointPickerProps): React.JSX.Element;
+declare function MapPointPicker({ onMapClick, points }: MapPointPickerProps): React.JSX.Element;
 
 export { type GpxInfo, GpxRouteMap, MapPointPicker, type RoutePoint };
