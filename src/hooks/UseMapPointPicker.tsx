@@ -1,25 +1,23 @@
 import * as React from 'react'
 import 'leaflet-gpx'
 import * as L from 'leaflet'
-import { useTranslation } from "react-i18next"
-import { iconRoute } from '../components/MapPointPicker/Icons'
+import { iconRoute, circleMarkerAttribs } from '../components/MapPointPicker/Icons'
 import { GeoPoint } from '../components/MapPointPicker/MapPointPicker'
 
-const ARROUND_BARCELONA: L.LatLngBoundsExpression = [[41.29, 1.70], [41.79, 2.30]]
-const circleMarkerAttribs = {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.2,
-  radius: 25000
+export interface PopopPoint {
+  point: GeoPoint,
+  content: HTMLElement
 }
 
-function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
-    const { t } = useTranslation()
+const ARROUND_BARCELONA: L.LatLngBoundsExpression = [[41.29, 1.70], [41.79, 2.30]]
+
+
+function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): void {
     const markers = React.useRef<Array<L.Layer>>([])
     const map = React.useRef<L.Map | null>(null)
 
     React.useEffect(() => {
-      const newMap = L.map('mappicker').fitBounds(ARROUND_BARCELONA);
+      const newMap = L.map('mappicker').fitBounds(ARROUND_BARCELONA)
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '© OpenStreetMap'
       }).addTo(newMap)
@@ -27,6 +25,7 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
         mapClick(e)
       })
       map.current = newMap
+      
       return () => {
         newMap.remove()
       }
@@ -37,38 +36,41 @@ function UseMapPointPicker(onMapClick: Function, points: Array<any>): void {
     }, [points])
 
 
-    function removePreviousMarkers() {
-      markers.current.forEach((marker) => {
-        marker.remove()
+    function removePreviousMarkers(removeCircle: boolean) {
+      markers.current.forEach((marker, index) => {
+        if(index === 0 && removeCircle || index > 0) {
+          marker.remove()
+        }
       })
     }
 
     function mapClick(e: L.LeafletMouseEvent) {
-      removePreviousMarkers()
+      const bounds: L.LatLngBounds | undefined = map.current?.getBounds()
+      const latGrad = (bounds?.getNorthEast().lat! - bounds?.getSouthWest().lat!)
+      removePreviousMarkers(true)
       markers.current = []
-
+      circleMarkerAttribs.radius = latGrad * 83332.5
+     
       const circle = L.circle([e.latlng.lat, e.latlng.lng], circleMarkerAttribs).addTo(map.current!)
       markers.current.push(circle)
 
-      onMapClick(e.latlng)
+      onMapClick(e.latlng, map.current?.getBounds())
     }
 
     function addPropsPoints() {
       let max: GeoPoint = { lat: -90, lon: -180 }
       let min: GeoPoint = { lat: 90, lon: 180 }
 
+      removePreviousMarkers(false)
       if (points.length > 0) {
-        points.forEach((point) => {
-          markers.current.push(L.marker([point.lat, point.lon], { icon: iconRoute }).addTo(map.current!))
-          max = getMax(point, max)
-          min = getMin(point, min)
+        points.forEach((poppoint) => {
+          markers.current.push(L.marker([poppoint.point.lat, poppoint.point.lon], 
+            { icon: iconRoute }).bindPopup(poppoint.content).openPopup().addTo(map.current!))
+          max = getMax(poppoint.point, max)
+          min = getMin(poppoint.point, min)
         })
       }
-
-      points.length && map.current?.fitBounds([
-        [min.lat-0.225, min.lon-0.225],
-        [max.lat+0.225, max.lon+0.225]])
-    }
+    } 
 }
 
 function getMin(p1: GeoPoint, p2: GeoPoint) {

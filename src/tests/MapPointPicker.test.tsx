@@ -17,6 +17,7 @@ const fitBounds = () => {
       fnCallbackToTest = callback
     }),
     fitBounds: jest.fn(),
+    getBounds: jest.fn(),
     remove: jest.fn()
    }
 }
@@ -53,6 +54,11 @@ jest.mock('leaflet', () => {
       return {
         addTo: jest.fn().mockImplementation(() => {
           return { remove: jest.fn() }
+        }),
+        bindPopup: jest.fn().mockImplementation(() => {
+          return { openPopup: jest.fn().mockImplementation(() => {
+            return { addTo: jest.fn() }
+          }) }
         })
       }
     }),
@@ -72,7 +78,7 @@ afterEach(() => {
 
 test('MapPointPicker renders the content', () => {
   const mapClick = jest.fn()
-  const points:Array<any> = [{ lat: 0, lon: 0}] 
+  const points:Array<any> = [ { point: { lat: 0, lon: 0}, content: '' }] 
   const { container } = render(<MapPointPicker onMapClick={mapClick} points={points} />)
   const div = screen.queryByTitle('mapPointPicker')
 
@@ -91,9 +97,8 @@ test('MapPointPicker click event draws a circle', () => {
   
   fnCallbackToTest({ latlng: { lat: 12, lng: 12 }})
   expect(L.circle).toHaveBeenCalledWith([12, 12], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.2,
-    radius: 25000
+    color: '#444',
+    fillColor: '#447',
+    fillOpacity: 0.2
   })
 })
