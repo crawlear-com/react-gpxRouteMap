@@ -1,9 +1,9 @@
 import * as React from 'react'
-import UseMapPointPicker from '../../hooks/UseMapPointPicker'
+import UseMapPointPicker, { PopopPoint } from '../../hooks/UseMapPointPicker'
 
 interface MapPointPickerProps {
     onMapClick: Function
-    points: Array<any>
+    points: Array<PopopPoint>
 }
 
 export interface GeoPoint {
