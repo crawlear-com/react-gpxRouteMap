@@ -49,7 +49,7 @@ function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): voi
       const latGrad = (bounds?.getNorthEast().lat! - bounds?.getSouthWest().lat!)
       removePreviousMarkers(true)
       markers.current = []
-      circleMarkerAttribs.radius = latGrad * 83332.5
+      circleMarkerAttribs.radius = latGrad * 50332.5
      
       const circle = L.circle([e.latlng.lat, e.latlng.lng], circleMarkerAttribs).addTo(map.current!)
       markers.current.push(circle)
