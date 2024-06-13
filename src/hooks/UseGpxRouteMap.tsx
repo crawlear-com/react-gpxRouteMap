@@ -26,6 +26,10 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
       }).addTo(map.current)
+
+      return () => {
+        map.current?.remove()
+      }
     }, [])
 
     React.useEffect(() => {
