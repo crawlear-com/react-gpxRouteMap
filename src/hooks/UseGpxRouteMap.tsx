@@ -28,6 +28,7 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
       }).addTo(map.current)
 
       return () => {
+        map.current?.off()
         map.current?.remove()
       }
     }, [])
