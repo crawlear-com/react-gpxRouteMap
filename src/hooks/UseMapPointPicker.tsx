@@ -27,6 +27,7 @@ function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): voi
       map.current = newMap
       
       return () => {
+        newMap.off()
         newMap.remove()
       }
     }, [])
