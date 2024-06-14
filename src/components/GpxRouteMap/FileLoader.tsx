@@ -6,7 +6,7 @@ interface FileLoaderProps {
 }
 
 function  FileLoader({ onFileLoaded }: FileLoaderProps) {
-    const { t } = useTranslation()
+    const { t } = useTranslation('gpxRouteMap')
     const fileSelectRef = React.useRef(null)
     const fileElemRef = React.useRef(null)
 
