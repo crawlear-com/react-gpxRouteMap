@@ -18,7 +18,7 @@ const gpxParserOptions = {
 function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
     const map = React.useRef<L.Map | null>(null)
     const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
-    const { t } = useTranslation()
+    const { t } = useTranslation('gpxRouteMap')
 
     React.useEffect(() => {
       map.current = L.map('map').fitWorld();
