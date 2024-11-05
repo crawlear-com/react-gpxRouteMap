@@ -6,7 +6,8 @@ export function parseGpxString(gpx: string) {
     let result
     try {
         const parser = new XMLParser({
-            ignoreAttributes: false
+            ignoreAttributes: false,
+            isArray: (tagName: string, jPath: string, isLeafNode: boolean, isAttribute: boolean) => (tagName === 'trkpt')
           });
           result = parser.parse(gpx)
     } catch(e) {
@@ -28,8 +29,14 @@ export function getGpxInfo(leafletEventTarget: any): GpxInfo {
 }
 
 export function getRoutePoint(jObj: any): RoutePoint {
+    let lat = 0, lon = 0
+
+    if (jObj.gpx.trk && jObj.gpx.trk.trkseg && jObj.gpx.trk.trkseg.trkpt[0] || jObj.gpx.wpt) {
+        lat = Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lat'] : jObj.gpx.wpt[0]['@_lat'])
+        lon = Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lon'] : jObj.gpx.wpt[0]['@_lon'])
+    }
     return {
-        lat: Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lat'] : jObj.gpx.wpt[0]['@_lat']),
-        lon: Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lon'] : jObj.gpx.wpt[0]['@_lon']),
+        lat: lat,
+        lon: lon,
       }
 }
