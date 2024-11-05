@@ -42,14 +42,14 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
 
     function getElevationMapData(gpx: string): Array<number> {
         const gpxObject = parseGpxString(gpx)
-        let sections: Array<any>
+        let sections: Array<any> = []
         const data: Array<number> = []
 
         if (gpxObject && gpxObject.gpx) {
           if (gpxObject.gpx.trk) {
             const trkpts = gpxObject.gpx.trk.trkseg.trkpt
 
-            sections = Array.isArray(trkpts) ? trkpts : [trkpts]
+            trkpts && (sections = Array.isArray(trkpts) ? trkpts : [trkpts])
           } else {
               sections = gpxObject.gpx.wpt
           }
