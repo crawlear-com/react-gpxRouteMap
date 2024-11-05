@@ -47,7 +47,9 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
 
         if (gpxObject && gpxObject.gpx) {
           if (gpxObject.gpx.trk) {
-            sections = gpxObject.gpx.trk.trkseg.trkpt
+            const trkpts = gpxObject.gpx.trk.trkseg.trkpt
+
+            sections = Array.isArray(trkpts) ? trkpts : [trkpts]
           } else {
               sections = gpxObject.gpx.wpt
           }
