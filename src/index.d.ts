@@ -3,6 +3,7 @@ import * as React from 'react';
 interface GpxRouteMapProps {
     gpx?: string;
     onFileResolved?: Function;
+    onRouteRecorded?: Function
 }
 interface RoutePoint {
     lat: number;
@@ -20,7 +21,7 @@ interface MapPointPickerProps {
     onMapClick: Function
     points: Array<any>
 }
-declare function GpxRouteMap({ gpx, onFileResolved }: GpxRouteMapProps): React.JSX.Element;
+declare function GpxRouteMap({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps): React.JSX.Element;
 
 declare function MapPointPicker({ onMapClick, points }: MapPointPickerProps): React.JSX.Element;
 

@@ -14,16 +14,16 @@ function  FileLoader({ onFileLoaded }: FileLoaderProps) {
         fileSelectRef.current && (fileSelectRef.current as HTMLButtonElement).addEventListener('click', () => {
             fileElemRef.current && (fileElemRef.current as HTMLButtonElement  as HTMLButtonElement).click();
         }, false);
-    
+
         fileElemRef.current && (fileElemRef.current as HTMLInputElement).addEventListener('change', (e: Event) => {
             const file = (e?.target as HTMLInputElement).files?.[0]
             const fr = new FileReader()
-    
+
             fr.onload = () => {
               onFileLoaded(fr.result?.toString() || '')
             }
             file && fr.readAsText(file)
-        })    
+        })
     }, [])
 
     return <>
