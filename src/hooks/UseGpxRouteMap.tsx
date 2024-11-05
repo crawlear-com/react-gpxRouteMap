@@ -1,7 +1,8 @@
 import * as React from 'react'
 import 'leaflet-gpx'
 import * as L from 'leaflet'
-import { XMLParser } from 'fast-xml-parser'
+import { parseGpxString, getGpxInfo, getRoutePoint } from '../Utils'
+
 import { RoutePoint, GpxInfo } from '../components/GpxRouteMap/GpxRouteMap'
 import { useTranslation } from "react-i18next"
 
@@ -50,7 +51,7 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
           } else {
               sections = gpxObject.gpx.wpt
           }
-          sections.forEach(element => {
+          sections && sections.forEach(element => {
               data.push(element.ele)
           })
         }
@@ -92,36 +93,6 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
     return [onFileLoaded, getElevationMapData, extraGpxInfo]
 }
 
-function getRoutePoint(jObj: any): RoutePoint {
-    return {
-        lat: Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lat'] : jObj.gpx.wpt[0]['@_lat']),
-        lon: Number(jObj.gpx.trk ? jObj.gpx.trk.trkseg.trkpt[0]['@_lon'] : jObj.gpx.wpt[0]['@_lon']),
-      }
-}
 
-function parseGpxString(gpx: string) {
-    let result
-    try {
-        const parser = new XMLParser({
-            ignoreAttributes: false
-          });
-          result = parser.parse(gpx)
-    } catch(e) {
-      result = { gpx: { wpt: [] } }
-    }
-
-    return result
-}
-
-function getGpxInfo(leafletEventTarget: any): GpxInfo {
-    return {
-        distance: leafletEventTarget.get_distance(),
-        time: leafletEventTarget.get_total_time(),
-        movingTime: leafletEventTarget.get_total_time(),
-        speed: leafletEventTarget.get_total_speed(),
-        elevationMin: leafletEventTarget.get_elevation_min(),
-        elevationMax: leafletEventTarget.get_elevation_max(),
-    }
-}
 
 export default UseGpxRouteMap

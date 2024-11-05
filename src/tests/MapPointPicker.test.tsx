@@ -16,6 +16,7 @@ const fitBounds = () => {
     on: jest.fn().mockImplementation((eventType: string, callback: Function) => {
       fnCallbackToTest = callback
     }),
+    off: jest.fn(),
     fitBounds: jest.fn(),
     getBounds: jest.fn(),
     remove: jest.fn()
@@ -27,11 +28,11 @@ jest.mock('leaflet-gpx')
 jest.mock('leaflet', () => {
   return {
     map: jest.fn().mockImplementation(() => {
-      return { 
+      return {
         fitWorld: jest.fn(),
         fitBounds: fitBounds,
         on: jest.fn(),
-        remove: jest.fn() 
+        remove: jest.fn()
       }
     }),
     tileLayer: jest.fn().mockImplementation(() => {
@@ -44,7 +45,7 @@ jest.mock('leaflet', () => {
       return {
         on: jest.fn().mockImplementation(() => {
           return { addTo: jest.fn() }
-        })        
+        })
       }
     }),
     icon: jest.fn().mockImplementation(() => {
@@ -78,7 +79,7 @@ afterEach(() => {
 
 test('MapPointPicker renders the content', () => {
   const mapClick = jest.fn()
-  const points:Array<any> = [ { point: { lat: 0, lon: 0}, content: '' }] 
+  const points:Array<any> = [ { point: { lat: 0, lon: 0}, content: '' }]
   const { container } = render(<MapPointPicker onMapClick={mapClick} points={points} />)
   const div = screen.queryByTitle('mapPointPicker')
 
@@ -92,13 +93,14 @@ test('MapPointPicker renders the content', () => {
 
 test('MapPointPicker click event draws a circle', () => {
   const mapClick = jest.fn()
-  const points:Array<any> = [] 
+  const points:Array<any> = []
   const { container } = render(<MapPointPicker onMapClick={mapClick} points={points} />)
-  
+
   fnCallbackToTest({ latlng: { lat: 12, lng: 12 }})
   expect(L.circle).toHaveBeenCalledWith([12, 12], {
     color: '#444',
     fillColor: '#447',
-    fillOpacity: 0.2
+    "fillOpacity": 0.2,
+    "radius": NaN
   })
 })

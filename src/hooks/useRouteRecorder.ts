@@ -9,7 +9,6 @@ interface useRouteRecorderProps {
 
 function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHandler<HTMLButtonElement>] {
     const [timer, setTimer] = React.useState(0)
-    const [locationCount, setlocationCount] = React.useState<number>(0)
     const [gpxDataString, setGpxDataString] = React.useState(previousGpxData?.replace('</trkseg></trk></gpx>','') || initialGpxDataString)
 
     function error() {
@@ -18,7 +17,6 @@ function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHa
 
     function success(position: GeolocationPosition) {
       setGpxDataString((previousData) => {
-        setlocationCount(locationCount+1)
         return previousData.concat(`<trkpt lon="${position.coords.longitude}" lat="${position.coords.latitude}"><ele>${position.coords.altitude}</ele><time>${position.timestamp}</time><speed>${position.coords.speed}</speed></trkpt>
             <trkpt lon="${position.coords.longitude}" lat="${position.coords.latitude}"><ele>${position.coords.altitude}</ele><time>${position.timestamp}</time><speed>${position.coords.speed}</speed></trkpt>`)
       })
@@ -43,7 +41,7 @@ function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHa
       }
     }
 
-    return [locationCount >= 1 ? gpxDataString.concat('</trkseg></trk></gpx>') : "", onStartStopClick]
+    return [gpxDataString.concat('</trkseg></trk></gpx>'), onStartStopClick]
 }
 
 export default useRouteRecorder

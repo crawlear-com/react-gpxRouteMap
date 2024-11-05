@@ -1,6 +1,7 @@
 import * as React from 'react'
 import UseGpxRouteMap from '../../hooks/UseGpxRouteMap'
 import useRouteRecorder from '../../hooks/useRouteRecorder'
+import { parseGpxString, getRoutePoint } from '../../Utils'
 import Graphs from './Graphs'
 import '../../i18n'
 
@@ -37,8 +38,11 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
   function onStartStopRecord(event: React.MouseEvent<HTMLButtonElement>) {
     setRecordState(!recordState)
     onStartStopClick(event)
-    if(!recordState) {
-      onRouteRecorded && onRouteRecorded(gpxRecorded)
+    if(recordState && onRouteRecorded) {
+      let jObj = parseGpxString(gpxRecorded)
+      const routePoint = getRoutePoint(jObj)
+
+      onRouteRecorded(gpxRecorded, routePoint)
     }
   }
 
