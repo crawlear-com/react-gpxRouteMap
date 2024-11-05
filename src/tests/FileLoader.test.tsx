@@ -50,11 +50,10 @@ test('change event on input loads the fileContent and calls the callback', async
   const input = screen.queryByTitle('inputFile')!
   const button = screen.queryByTitle('buttonInputFile')!
 
-  
-    fireEvent.click(button)
-    fireEvent.change(input, {
-      target: { files: [new File(["gpx file content"], "test.gpx", { type: "plain/text" })] },
-    })
+  fireEvent.click(button)
+  fireEvent.change(input, {
+    target: { files: [new File(["gpx file content"], "test.gpx", { type: "plain/text" })] },
+  })
 
   await waitFor(() => {expect(readAsTextSpy).toHaveBeenCalled()});
   await waitFor(() => {expect(onFileLoaded).toHaveBeenCalled()});

@@ -25,7 +25,7 @@ function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): voi
         mapClick(e)
       })
       map.current = newMap
-      
+
       return () => {
         newMap.off()
         newMap.remove()
@@ -51,7 +51,7 @@ function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): voi
       removePreviousMarkers(true)
       markers.current = []
       circleMarkerAttribs.radius = latGrad * 50332.5
-     
+
       const circle = L.circle([e.latlng.lat, e.latlng.lng], circleMarkerAttribs).addTo(map.current!)
       markers.current.push(circle)
 
@@ -65,13 +65,13 @@ function UseMapPointPicker(onMapClick: Function, points: Array<PopopPoint>): voi
       removePreviousMarkers(false)
       if (points.length > 0) {
         points.forEach((poppoint) => {
-          markers.current.push(L.marker([poppoint.point.lat, poppoint.point.lon], 
+          markers.current.push(L.marker([poppoint.point.lat, poppoint.point.lon],
             { icon: iconRoute }).bindPopup(poppoint.content).openPopup().addTo(map.current!))
           max = getMax(poppoint.point, max)
           min = getMin(poppoint.point, min)
         })
       }
-    } 
+    }
 }
 
 function getMin(p1: GeoPoint, p2: GeoPoint) {
@@ -86,7 +86,7 @@ function getMin(p1: GeoPoint, p2: GeoPoint) {
 
 function getMax(p1: GeoPoint, p2: GeoPoint) {
   if(p1.lat > p2.lat) {
-    p2.lat = p1.lat 
+    p2.lat = p1.lat
   }
   if(p1.lon > p2.lon) {
     p2.lon = p1.lon
