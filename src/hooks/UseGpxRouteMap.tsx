@@ -43,13 +43,13 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
         const gpxObject = parseGpxString(gpx)
         let sections: Array<any>
         const data: Array<number> = []
-    
+
         if (gpxObject && gpxObject.gpx) {
           if (gpxObject.gpx.trk) {
             sections = gpxObject.gpx.trk.trkseg.trkpt
           } else {
               sections = gpxObject.gpx.wpt
-          }      
+          }
           sections.forEach(element => {
               data.push(element.ele)
           })
@@ -68,21 +68,21 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
       </div>
     }
 
-    function onFileLoaded(fileContents: string): void {
+  function onFileLoaded(fileContents: string): void {
       try {
         let jObj = parseGpxString(fileContents)
         const onLoadedHandler = (e: L.LeafletEvent) => {
             const routePoint: RoutePoint = getRoutePoint(jObj)
             const gpxInfo = getGpxInfo(e.target)
 
-            map.current?.fitBounds(e.target.getBounds())
             setExtraGpxInfo(generateInfoPopUp(gpxInfo))
+            map.current?.fitBounds(e.target.getBounds())
             onFileResolved && onFileResolved(fileContents, routePoint)
         }
         const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map.current!) 
 
       } catch(e) {
-        onFileResolved && onFileResolved('', { 
+        onFileResolved && onFileResolved('', {
           lat: 0,
           lon: 0
         },<></>)
@@ -103,7 +103,7 @@ function parseGpxString(gpx: string) {
     let result
     try {
         const parser = new XMLParser({
-            ignoreAttributes: false 
+            ignoreAttributes: false
           });
           result = parser.parse(gpx)
     } catch(e) {
