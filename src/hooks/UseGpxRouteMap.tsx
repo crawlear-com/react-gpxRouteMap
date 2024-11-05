@@ -35,7 +35,7 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
     }, [])
 
     React.useEffect(() => {
-      if (gpx && gpx.length) {
+      if (gpx && gpx.length && (gpx.indexOf('<trkpt')>0 || gpx.indexOf('<wpt')>0)) {
         onFileLoaded(gpx)
       }
     }, [gpx])
