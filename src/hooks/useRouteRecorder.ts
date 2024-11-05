@@ -17,8 +17,11 @@ function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHa
 
     function success(position: GeolocationPosition) {
       setGpxDataString((previousData) => {
-        return previousData.concat(`<trkpt lon="${position.coords.longitude}" lat="${position.coords.latitude}"><ele>${position.coords.altitude}</ele><time>${position.timestamp}</time><speed>${position.coords.speed}</speed></trkpt>
-            <trkpt lon="${position.coords.longitude}" lat="${position.coords.latitude}"><ele>${position.coords.altitude}</ele><time>${position.timestamp}</time><speed>${position.coords.speed}</speed></trkpt>`)
+        return previousData.concat(`
+          <trkpt lon="${position.coords.longitude}" lat="${position.coords.latitude}">
+            <ele>${position.coords.altitude ? position.coords.altitude : 0}</ele>
+            <time>${position.timestamp}</time>
+            <speed>${position.coords.speed ? position.coords.speed : 0 }</speed></trkpt>`)
       })
     }
 
