@@ -1,9 +1,10 @@
 import * as React from 'react'
 import UseGpxRouteMap from '../../hooks/UseGpxRouteMap'
 import useRouteRecorder from '../../hooks/useRouteRecorder'
+import useWakeLock from '../../hooks/useWakeLock'
 import { parseGpxString, getRoutePoint } from '../../Utils'
 import Graphs from './Graphs'
-import ErrorBox from '../ErrorBox'
+import ErrorBox, { NO_ERROR } from '../ErrorBox'
 import '../../i18n'
 
 import 'leaflet/dist/leaflet.css'
@@ -31,6 +32,7 @@ export interface GpxInfo {
 }
 
 function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps): React.JSX.Element {
+  const [requestWakeLock, releaseWakeLock] = useWakeLock(onError)
   const [gpxRecorded, onStartStopClick] = useRouteRecorder(onError, gpx)
   const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpxRecorded)
   const [recordState, setRecordState] = React.useState(false)
@@ -39,16 +41,24 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
 
   function onError(error: number) {
     setError(error)
+    if(recordState) {
+      setRecordState(false)
+    }
+    releaseWakeLock()
   }
 
   function onStartStopRecord(event: React.MouseEvent<HTMLButtonElement>) {
+    setError(NO_ERROR)
     setRecordState(!recordState)
     onStartStopClick(event)
     if(recordState && onRouteRecorded && gpxRecorded && gpxRecorded.length && (gpxRecorded.indexOf('<trkpt')>0 || gpxRecorded.indexOf('<wpt')>0)) {
       let jObj = parseGpxString(gpxRecorded)
       const routePoint = getRoutePoint(jObj)
 
+      releaseWakeLock()
       onRouteRecorded(gpxRecorded, routePoint)
+    } else if (!recordState) {
+      requestWakeLock()
     }
   }
 
