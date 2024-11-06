@@ -44,7 +44,7 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
   function onStartStopRecord(event: React.MouseEvent<HTMLButtonElement>) {
     setRecordState(!recordState)
     onStartStopClick(event)
-    if(recordState && onRouteRecorded) {
+    if(recordState && onRouteRecorded && gpxRecorded && gpxRecorded.length && (gpxRecorded.indexOf('<trkpt')>0 || gpxRecorded.indexOf('<wpt')>0)) {
       let jObj = parseGpxString(gpxRecorded)
       const routePoint = getRoutePoint(jObj)
 
