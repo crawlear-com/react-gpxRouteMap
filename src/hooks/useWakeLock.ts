@@ -1,8 +1,9 @@
 import * as React from 'react'
+import { ERR_WAKELOCK_NOT_AVAILABLE } from '../components/ErrorBox';
 
 const isWakeLockSupported = () => "wakeLock" in navigator;
 
-function useWakeLock() {
+function useWakeLock(onError: Function): [Function, Function] {
     const [wakeLock, setWakeLock] = React.useState<WakeLockSentinel| null>(null)
     const requestWakeLock = async () => {
       try {
@@ -13,13 +14,15 @@ function useWakeLock() {
         });
         setWakeLock(lock)
       } catch (err) {
-        console.error(`${(err as Error).name}, ${(err as Error).message}`);
+        onError(ERR_WAKELOCK_NOT_AVAILABLE)
       }
     }
 
-    React.useEffect(() => {
-      isWakeLockSupported() && requestWakeLock()
-    }, [])
+    function releaseWakeLock() {
+      wakeLock && wakeLock.release().then(() => setWakeLock(null));
+    }
+
+    return [requestWakeLock, releaseWakeLock]
 }
 
 export default useWakeLock

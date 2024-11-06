@@ -1,8 +1,10 @@
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 
+export const NO_ERROR = 0
 export const ERR_GEOLOCATION_NOT_AVAILABLE = -1
 export const ERR_GEOLOCATION_NOT_RESOLVED = -2
+export const ERR_WAKELOCK_NOT_AVAILABLE = -3
 
 function getErrorLabel(error: number): string {
     let errorMessage = ''
@@ -12,6 +14,9 @@ function getErrorLabel(error: number): string {
         break;
       case ERR_GEOLOCATION_NOT_RESOLVED:
         errorMessage = 'errorNotResolved'
+        break;
+      case ERR_WAKELOCK_NOT_AVAILABLE:
+        errorMessage = 'errorNoWakeLock'
         break;
       default:
         errorMessage = 'errorNotResolved'
