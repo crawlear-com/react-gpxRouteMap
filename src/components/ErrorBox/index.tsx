@@ -28,7 +28,7 @@ interface ErrorBoxProps {
 function ErrorBox({ error }: ErrorBoxProps) {
     const { t } = useTranslation('gpxRouteMap')
 
-    return error < 0 ? <div className="errorBox">{ t(getErrorLabel(error)) }</div> : <></>
+    return error < 0 ? <div role="alert" className="errorBox">{ t(getErrorLabel(error)) }</div> : <></>
 }
 
 export default ErrorBox
