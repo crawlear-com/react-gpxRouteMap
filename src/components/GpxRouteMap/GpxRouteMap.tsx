@@ -2,10 +2,12 @@ import * as React from 'react'
 import UseGpxRouteMap from '../../hooks/UseGpxRouteMap'
 import useRouteRecorder from '../../hooks/useRouteRecorder'
 import useWakeLock from '../../hooks/useWakeLock'
+import RecButton from './RecButton'
 import { parseGpxString, getRoutePoint } from '../../Utils'
 import Graphs from './Graphs'
 import ErrorBox, { NO_ERROR } from '../ErrorBox'
-import '../../i18n'
+import { useTranslation, I18nextProvider } from 'react-i18next'
+import i18n from '../../i18n'
 
 import 'leaflet/dist/leaflet.css'
 import FileLoader from './FileLoader'
@@ -37,6 +39,7 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
   const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpxRecorded)
   const [recordState, setRecordState] = React.useState(false)
   const [error, setError] = React.useState<number>(0)
+  const { t } = useTranslation(['gpxRouteMap'])
   const data = getElevationMapData(gpxRecorded || '')
 
   function onError(error: number) {
@@ -62,14 +65,17 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
     }
   }
 
-  return <div className="mapContainer">
-      <ErrorBox error={error} />
-      { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
-      { onRouteRecorded && <button onClick={onStartStopRecord}>{recordState ? "Stop" : "Rec"}</button> }
-      <div id="map" title='routeMap' className="map"></div>
-      { data.length ? <Graphs data={data} /> : <></> }
-      { extraGpxInfo }
+  return <I18nextProvider i18n={i18n}>
+      <div className="mapContainer">
+        <ErrorBox error={error} />
+        <div>{t('recbutton')}</div>
+        { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
+        { onRouteRecorded && <RecButton onStartStopRecord={onStartStopRecord} recordState={recordState} /> }
+        <div id="map" title='routeMap' className="map"></div>
+        { data.length ? <Graphs data={data} /> : <></> }
+        { extraGpxInfo }
       </div>
+    </I18nextProvider>
 }
 
 export default GpxRouteMap
