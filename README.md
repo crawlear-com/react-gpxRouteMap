@@ -18,5 +18,3 @@ gpxRouteMap uses:
     <li>fast-xml-parser: https://github.com/NaturalIntelligence/fast-xml-parser</li>
 </ul>
 
-leaflet maps, wake lock api, geolocation api, file api and fast xml parser.
-
