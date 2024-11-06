@@ -87,7 +87,8 @@ test('GpxRouteMap inits without gpx', () => {
     })
     expect(addToMap).toHaveBeenCalled()
     //clean gpx
-    expect(L.GPX).toHaveBeenCalledWith("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\" creator=\"murbit GPX Tracker\"><trk><trkseg></trkseg></trk></gpx>", {"async": true, "marker_options": {"endIconUrl": "/marker-icon-end.png", "shadowUrl": "/marker-shadow.png", "startIconUrl": "/marker-icon-start.png", "wptIconUrls": {"": "/marker-icon.png"}}})
+    expect(L.GPX).not.toHaveBeenCalled()
+    expect(L.GPX).not.toHaveBeenCalledWith("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?><gpx xmlns=\"http://www.topografix.com/GPX/1/1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\" version=\"1.1\" creator=\"murbit GPX Tracker\"><trk><trkseg></trkseg></trk></gpx>", {"async": true, "marker_options": {"endIconUrl": "/marker-icon-end.png", "shadowUrl": "/marker-shadow.png", "startIconUrl": "/marker-icon-start.png", "wptIconUrls": {"": "/marker-icon.png"}}})
 })
 
 test('GpxRouteMap inits with gpx', () => {

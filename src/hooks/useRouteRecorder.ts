@@ -2,17 +2,15 @@ import * as React from 'react'
 
 const initialGpxDataString = `<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="murbit GPX Tracker"><trk><trkseg>`
 const TIMER_FREQUENCY = 60 * 1000
+export const ERR_GEOLOCATION_NOT_AVAILABLE = -1
+export const ERR_GEOLOCATION_NOT_RESOLVED = -2
 
-interface useRouteRecorderProps {
-    previousGpxData?: string
-}
-
-function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHandler<HTMLButtonElement>] {
+function useRouteRecorder(onError: Function, previousGpxData?: string): [string, React.MouseEventHandler<HTMLButtonElement>] {
     const [timer, setTimer] = React.useState(0)
     const [gpxDataString, setGpxDataString] = React.useState(previousGpxData?.replace('</trkseg></trk></gpx>','') || initialGpxDataString)
 
     function error() {
-      console.log("ERROR!")
+      onError(ERR_GEOLOCATION_NOT_RESOLVED)
     }
 
     function success(position: GeolocationPosition) {
@@ -28,6 +26,8 @@ function useRouteRecorder(previousGpxData?: string): [string, React.MouseEventHa
     function getGeolocationPosition() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, error);
+      } else {
+        onError(ERR_GEOLOCATION_NOT_AVAILABLE)
       }
     }
 

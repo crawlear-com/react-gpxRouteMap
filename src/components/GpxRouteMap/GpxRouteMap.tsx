@@ -3,6 +3,7 @@ import UseGpxRouteMap from '../../hooks/UseGpxRouteMap'
 import useRouteRecorder from '../../hooks/useRouteRecorder'
 import { parseGpxString, getRoutePoint } from '../../Utils'
 import Graphs from './Graphs'
+import ErrorBox from '../ErrorBox'
 import '../../i18n'
 
 import 'leaflet/dist/leaflet.css'
@@ -30,10 +31,15 @@ export interface GpxInfo {
 }
 
 function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps): React.JSX.Element {
-  const [gpxRecorded, onStartStopClick] = useRouteRecorder(gpx)
+  const [gpxRecorded, onStartStopClick] = useRouteRecorder(onError, gpx)
   const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpxRecorded)
   const [recordState, setRecordState] = React.useState(false)
+  const [error, setError] = React.useState<number>(0)
   const data = getElevationMapData(gpxRecorded || '')
+
+  function onError(error: number) {
+    setError(error)
+  }
 
   function onStartStopRecord(event: React.MouseEvent<HTMLButtonElement>) {
     setRecordState(!recordState)
@@ -47,6 +53,7 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
   }
 
   return <div className="mapContainer">
+      <ErrorBox error={error} />
       { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
       { onRouteRecorded && <button onClick={onStartStopRecord}>{recordState ? "Stop" : "Rec"}</button> }
       <div id="map" title='routeMap' className="map"></div>

@@ -14,6 +14,8 @@ const i18n = createInstance({
         tiempomovimiento: "Movement time",
         elevacionmin: "Elevation min",
         elevacionmax: "Elevation max",
+        errorNotAvailable: "The gelocation privacy permissions don't allow to record your position. Please give the required permissions at the system preferences.",
+        errorNotResolved: "The geolocation could not be resolved"
       }
     },
     es: {
@@ -24,7 +26,9 @@ const i18n = createInstance({
           tiempo: "Tiempo",
           tiempomovimiento: "Tiempo en movimiento",
           elevacionmin: "Elevación min",
-          elevacionmax: "Elevación max"  
+          elevacionmax: "Elevación max",
+          errorNotAvailable: "Los permisos de privacidad en geolocalización no permiten obtener tu posición. Por favor da los permisos necesarios en la configuración del sistema",
+          errorNotResolved: "La geolocalización no pudo resolverse"
         }
     }
   },
