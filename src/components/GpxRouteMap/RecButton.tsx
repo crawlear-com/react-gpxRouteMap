@@ -8,7 +8,7 @@ interface GpxRecorderProps {
 }
 
 function RecButton({ onStartStopRecord, recordState}: GpxRecorderProps) {
-    return <button className={`recButton ${recordState ? 'Rec' : 'notRec'}`} onClick={onStartStopRecord} />
+    return <button id="recButton" className={`recButton ${recordState ? 'Rec' : 'notRec'}`} onClick={onStartStopRecord} />
 }
 
 export default RecButton
