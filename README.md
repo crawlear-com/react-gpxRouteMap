@@ -1,13 +1,14 @@
 # react-gpxRouteMap
 
-<div align="center">
-    <img src="https://crawlear.com/static/route2.jpeg" width="150px"></img> 
-</div>
 React gpx map visualizer module:
 <ul>
     <li>maps to visualize GPX routes</li>
     <li>map point picker</li>
 </ul>
+
+<div align="center">
+    <img src="https://crawlear.com/static/route2.jpeg" width="150px"></img> 
+</div>
 
 gpxRouteMap uses:
 <ul>
