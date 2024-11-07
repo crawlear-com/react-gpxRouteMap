@@ -16,9 +16,11 @@ const gpxParserOptions = {
     }
 }
 
-function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
+function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): [Function, Function, React.JSX.Element, boolean, Function, number, Function] {
     const map = React.useRef<L.Map | null>(null)
     const [extraGpxInfo, setExtraGpxInfo] = React.useState<React.JSX.Element>(<></>)
+    const [recordState, setRecordState] = React.useState(false)
+    const [error, setError] = React.useState<number>(0)
     const { t } = useTranslation('gpxRouteMap')
 
     React.useEffect(() => {
@@ -80,7 +82,7 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
             map.current?.fitBounds(e.target.getBounds())
             onFileResolved && onFileResolved(fileContents, routePoint)
         }
-        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map.current!) 
+        const gpxL = new L.GPX(fileContents, gpxParserOptions).on('loaded', onLoadedHandler).addTo(map.current!)
 
       } catch(e) {
         onFileResolved && onFileResolved('', {
@@ -90,7 +92,7 @@ function UseGpxRouteMap(onFileResolved?: Function, gpx?: string): Array<any> {
       }
     }
 
-    return [onFileLoaded, getElevationMapData, extraGpxInfo]
+    return [onFileLoaded, getElevationMapData, extraGpxInfo, recordState, setRecordState, error, setError]
 }
 
 
