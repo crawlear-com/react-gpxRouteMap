@@ -71,9 +71,11 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
   return <I18nextProvider i18n={i18n}>
       <div className="mapContainer">
         <ErrorBox error={error} />
-        <div>{t('recbutton')}</div>
         { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
-        { onRouteRecorded && <RecButton onStartStopRecord={onStartStopRecord} recordState={recordState} onPollingTimeChange={onPollingTimeChanged} value={pollingTime} /> }
+        { onRouteRecorded && <>
+          <div>{t('recbutton')}</div>
+          <RecButton onStartStopRecord={onStartStopRecord} recordState={recordState} onPollingTimeChange={onPollingTimeChanged} value={pollingTime} />
+        </> }
         <div id="map" title='routeMap' className="map"></div>
         { data.length ? <Graphs data={data} /> : <></> }
         { extraGpxInfo }
