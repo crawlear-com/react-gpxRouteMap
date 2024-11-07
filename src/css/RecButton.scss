@@ -24,7 +24,8 @@
 .recContainer {
 	display: flex;
 	flex-direction: row;
-	width: 55%;
+	width: 100%;
+    max-width: 310px;
     margin: auto;
 
 	input {
