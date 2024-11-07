@@ -1,6 +1,6 @@
 {
   "name": "react-gpxroutemap",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "gpx route visualizer using Leaflet, File API and react",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
