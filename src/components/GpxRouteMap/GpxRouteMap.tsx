@@ -34,11 +34,10 @@ export interface GpxInfo {
 }
 
 function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps): React.JSX.Element {
+  const [pollingTime, setPollingTime] = React.useState<number>(30)
+  const [gpxRecorded, onStartStopClick] = useRouteRecorder(pollingTime, onError, gpx)
   const [requestWakeLock, releaseWakeLock] = useWakeLock(onError)
-  const [gpxRecorded, onStartStopClick] = useRouteRecorder(onError, gpx)
-  const [onFileLoaded, getElevationMapData, extraGpxInfo] = UseGpxRouteMap(onFileResolved, gpxRecorded)
-  const [recordState, setRecordState] = React.useState(false)
-  const [error, setError] = React.useState<number>(0)
+  const [onFileLoaded, getElevationMapData, extraGpxInfo, recordState, setRecordState, error, setError] = UseGpxRouteMap(onFileResolved, gpxRecorded)
   const { t } = useTranslation(['gpxRouteMap'])
   const data = getElevationMapData(gpxRecorded || '')
 
@@ -65,12 +64,16 @@ function GpxRouteMap ({ gpx, onFileResolved, onRouteRecorded }: GpxRouteMapProps
     }
   }
 
+  function onPollingTimeChanged(value: number) {
+    setPollingTime(value)
+  }
+
   return <I18nextProvider i18n={i18n}>
       <div className="mapContainer">
         <ErrorBox error={error} />
         <div>{t('recbutton')}</div>
         { onFileResolved && <FileLoader onFileLoaded={onFileLoaded}></FileLoader> }
-        { onRouteRecorded && <RecButton onStartStopRecord={onStartStopRecord} recordState={recordState} /> }
+        { onRouteRecorded && <RecButton onStartStopRecord={onStartStopRecord} recordState={recordState} onPollingTimeChange={onPollingTimeChanged} value={pollingTime} /> }
         <div id="map" title='routeMap' className="map"></div>
         { data.length ? <Graphs data={data} /> : <></> }
         { extraGpxInfo }

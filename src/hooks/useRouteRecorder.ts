@@ -5,7 +5,7 @@ const TIMER_FREQUENCY = 60 * 1000
 export const ERR_GEOLOCATION_NOT_AVAILABLE = -1
 export const ERR_GEOLOCATION_NOT_RESOLVED = -2
 
-function useRouteRecorder(onError: Function, previousGpxData?: string): [string, React.MouseEventHandler<HTMLButtonElement>] {
+function useRouteRecorder(pollingTime: number, onError: Function, previousGpxData?: string): [string, React.MouseEventHandler<HTMLButtonElement>] {
   const [timer, setTimer] = React.useState(0)
   const [gpxDataString, setGpxDataString] = React.useState(previousGpxData?.replace('</trkseg></trk></gpx>','') || initialGpxDataString)
 
@@ -46,7 +46,7 @@ function useRouteRecorder(onError: Function, previousGpxData?: string): [string,
       getGeolocationPosition()
         const newTimer = window.setInterval(() => {
           getGeolocationPosition()
-        }, TIMER_FREQUENCY)
+        }, pollingTime * 1000)
         setTimer(newTimer)
     }
   }

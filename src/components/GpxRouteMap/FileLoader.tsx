@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { useTranslation } from "react-i18next"
 
+import '../../css/FileLoader.scss'
+
 interface FileLoaderProps {
     onFileLoaded: Function
 }
@@ -28,7 +30,7 @@ function  FileLoader({ onFileLoaded }: FileLoaderProps) {
 
     return <>
         <input ref={fileElemRef} title="inputFile" type="file" id="fileElem" multiple accept=".gpx" style={{ display: 'none' }} />
-        <button ref={fileSelectRef} title="buttonInputFile"  id="fileSelect" type="button">{t('gpxupload')}</button>
+        <button className="fileButton" ref={fileSelectRef} title="buttonInputFile"  id="fileSelect" type="button">{t('gpxupload')}</button>
     </>
 }
 
