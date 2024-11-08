@@ -21,10 +21,10 @@ function RecButton({ value, onStartStopRecord, recordState, onPollingTimeChange}
     }
 
     return <div className="recContainer">
-        <button id="recButton" className={`recButton ${recordState ? 'Rec' : 'notRec'}`} onClick={onStartStopRecord} />
-        { t('pollingTime') }
-        <input type="number" min="14" max="120" {...readOnlyStatus} value={value} onChange={onValueChange} />
-        secs
+        <button id="recButton" className={`marginAuto recButton ${recordState ? 'Rec' : 'notRec'}`} onClick={onStartStopRecord} />
+        <span className='marginAuto'>{ t('pollingTime') }</span>
+        <input className='marginAuto' type="number" min="14" max="120" {...readOnlyStatus} value={value} onChange={onValueChange} />
+        <span className='marginAuto'>secs</span>
     </div>
 }
 
