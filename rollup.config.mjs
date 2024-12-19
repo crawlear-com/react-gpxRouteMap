@@ -32,7 +32,7 @@ export default [
       }),
       resolve(),
       commonjs(),
-      typescript({ 
+      typescript({
         tsconfig: "./tsconfig.json",
         exclude: [".scss", ".css"]
       }),
@@ -48,7 +48,8 @@ export default [
       }),
       copy({
         targets: [
-          { src: 'src/resources/img/**/*', dest: 'dist/public/img' }
+          { src: 'src/resources/img/**/*', dest: 'dist/public/img' },
+          { src: 'src/index.d.ts', dest: 'dist/' }
         ]
       })
     ]
