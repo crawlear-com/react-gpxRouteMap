@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "npm run build",
     "test": "jest",
-    "build": "rollup -c; cp src/index.d.ts dist/"
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
